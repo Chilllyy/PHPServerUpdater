@@ -14,7 +14,25 @@ class Pterodactyl
      * @return void
      */
     private function setServerPowerState(string $signal) {
+        $url = $this->config->pterodactyl_url;
+        $data = [
+            'signal' => $signal
+        ];
+        $jsonData = json_encode($data);
 
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $this->config->pterodactyl_api_key
+        ]);
+
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+            die("Error encountered: " . curl_error($ch));
+        }
     }
 
     /**
