@@ -11,6 +11,9 @@ set_time_limit(0);
 $file = '/tmp/queue.yml';
 $delete_queue = true;
 echo "Loading Queue File\n";
+if (!file_exists($file)) {
+    die("No Queue to run");
+}
 $yaml = Yaml::parseFile($file);
 if (!array_key_exists('id', $yaml)) {
     die("No Queue to run");
