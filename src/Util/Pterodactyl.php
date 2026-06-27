@@ -138,7 +138,8 @@ class Pterodactyl
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Authorization: Bearer ' . $this->config->pterodactyl_api_key
+            'Authorization: Bearer ' . $this->config->pterodactyl_api_key,
+            'Accept: Application/vnd.pterodactyl.v1+json'
         ]);
         echo "Sending Curl\n";
         $response = curl_exec($curl);
@@ -173,7 +174,8 @@ class Pterodactyl
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
-            'Authorization: Bearer ' . $this->config->pterodactyl_api_key
+            'Authorization: Bearer ' . $this->config->pterodactyl_api_key,
+            'Accept: Application/vnd.pterodactyl.v1+json'
         ]);
         echo "Sending Curl\n";
         $response = curl_exec($curl);
