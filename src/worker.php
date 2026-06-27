@@ -4,7 +4,7 @@ use Chilly\Util\Pterodactyl;
 use Symfony\Component\Yaml\Yaml;
 
 include __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/Util/Init.php';
+require_once __DIR__ . '/Util/Init.php';
 
 set_time_limit(0);
 
