@@ -4,6 +4,7 @@ use Chilly\Util\Config;
 use Chilly\Util\Database;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+
 class Init
 {
     public static Config $config;

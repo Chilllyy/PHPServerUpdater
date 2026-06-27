@@ -3,6 +3,7 @@
 use Chilly\Util\ServerTemplate;
 include __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/Util/Init.php';
+require_once __DIR__ . '/auth.php';
 ?>
 
 <!DOCTYPE html>
