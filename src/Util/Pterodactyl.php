@@ -118,7 +118,13 @@ class Pterodactyl
         if (curl_errno($curl)) {
             die("Error Encountered while curling: " . curl_error($curl));
         }
-        echo "Received Response: $response";
+        $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        while ($code == 429) {
+            echo "Received code 429, waiting 30 seconds for rate limit";
+            sleep(30);
+            return $response = $this->get($url);
+        }
+        echo "Received Response: $response\n";
         return $response;
     }
 
@@ -143,7 +149,13 @@ class Pterodactyl
         if (curl_errno($curl)) {
             die("Error Encountered while curling: " . curl_error($curl));
         }
-        echo "Received Response: $response";
+        $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        while ($code == 429) {
+            echo "Received code 429, waiting 30 seconds for rate limit";
+            sleep(30);
+            return $response = $this->post($url, $data);
+        }
+        echo "Received Response: $response\n";
         return $response;
     }
 }
