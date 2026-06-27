@@ -14,7 +14,6 @@ $id = $_GET['id'];
 $template = ServerTemplate::GetOne($id);
 
 if (isset($_GET['upload'])) {
-    echo "TODO Upload to server";
     $yamlString = Yaml::dump(['id' => $id], 2);
     file_put_contents('/tmp/queue.yml', $yamlString);
     $path = realpath(__DIR__ . '/worker.php');
