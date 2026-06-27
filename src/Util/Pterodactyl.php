@@ -14,6 +14,7 @@ class Pterodactyl
      * @return void
      */
     private function setServerPowerState(string $signal) {
+        echo "Setting Power State\n";
         $url = $this->config->pterodactyl_url;
         $data = [
             'signal' => $signal
@@ -28,8 +29,9 @@ class Pterodactyl
             'Content-Type: application/json',
             'Authorization: Bearer ' . $this->config->pterodactyl_api_key
         ]);
-
+        echo "Sending Curl\n";
         $response = curl_exec($ch);
+        echo "Curl sent\n";
         if (curl_errno($ch)) {
             die("Error encountered: " . curl_error($ch));
         }
