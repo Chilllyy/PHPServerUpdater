@@ -12,11 +12,11 @@ $yaml = Yaml::parseFile($file);
 if (!array_key_exists('id', $yaml)) {
     die("No Queue to run");
 }
-echo "Loaded Queue!";
+echo "Loaded Queue!<br>";
 $upload_id = $yaml['id'];
 echo "Found Upload ID: " , $upload_id;
-echo "Creating Pterodactyl Worker";
+echo "<br>Creating Pterodactyl Worker";
 $pterodactyl = new Pterodactyl();
-echo "Created Worker";
+echo "Created Worker<br>";
 $pterodactyl->stopServer();
-echo "Stopping Server";
+echo "Stopping Server<br>";
