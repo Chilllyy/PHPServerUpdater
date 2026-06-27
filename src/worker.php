@@ -1,6 +1,7 @@
 <?php
 
 use Chilly\Util\Pterodactyl;
+use Chilly\Util\ServerTemplate;
 use Symfony\Component\Yaml\Yaml;
 
 include __DIR__ . '/../vendor/autoload.php';
@@ -22,15 +23,22 @@ if (!array_key_exists('id', $yaml)) {
 echo "Loaded Queue!\n";
 $upload_id = $yaml['id'];
 echo "Found Upload ID: $upload_id\n";
+$template = ServerTemplate::GetOne($upload_id);
+if (!$template) {
+    echo "No Template Found by that ID!\n";
+    unlink($file);
+    exit;
+}
 $upload_file = __DIR__ . "/../uploads/$upload_id.zip";
 echo "Searching for file $upload_file\n";
 if (!file_exists($upload_file)) {
     if ($delete_queue) {
         unlink($file);
     }
-    die("File to upload doesn't exist, cancelling");
+    die("File to upload doesn't exist, cancelling\n");
 }
-echo "\nCreating Pterodactyl Worker\n";
+echo "Preparing to Upload Template with name {$template->template_name}\n";
+echo "Creating Pterodactyl Worker\n";
 $pterodactyl = new Pterodactyl();
 echo "Created Worker\n";
 //BEGIN SERVER ACTIONS
