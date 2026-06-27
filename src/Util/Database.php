@@ -70,6 +70,20 @@ class ServerTemplate
         return null;
     }
 
+    public static function GetNext() {
+        $query = "SELECT * FROM server_templates WHERE is_next = 1 LIMIT 1";
+        $run = Database::getConnection()->prepare($query);
+        $run->execute();
+        $row = $run->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            //There is a "next" chosen
+            return new ServerTemplate($row['id'], $row['template_name'], $row['is_next'] == 1);
+        } else {
+            //There is not a "next" chosen
+            return ServerTemplate::GetRandom();
+        }
+    }
+
     /**
      * Gets One Server Template
      * @param string $id ID to get
