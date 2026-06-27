@@ -15,27 +15,12 @@ class Pterodactyl
      */
     private function setServerPowerState(string $signal) {
         echo "Setting Power State\n";
-        $url = $this->config->pterodactyl_url . "/api/client/servers/" . $this->config->server_uuid . "/power";
+        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/power";
         $data = [
             'signal' => $signal
         ];
-        $jsonData = json_encode($data);
-
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/json',
-            'Authorization: Bearer ' . $this->config->pterodactyl_api_key
-        ]);
-        echo "Sending Curl\n";
-        $response = curl_exec($ch);
-        echo "Curl sent\n";
-        if (curl_errno($ch)) {
-            die("Error encountered: " . curl_error($ch));
-        }
-        echo "Curl Response: " . $response;
+        echo "Sending POST request\n";
+        $this->__post($url, $data);
     }
 
     /**
@@ -57,8 +42,11 @@ class Pterodactyl
      * @return bool whether server is running (true) or not (false)
      */
     public function getServerRunning(): bool {
-
-        return true;
+        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/resources";
+        $response = $this->__get($url);
+        $response_data = json_decode($response);
+        $running = $response_data['attributes']['current_state'] == 'running';
+        return $running;
     }
 
     /**
@@ -67,9 +55,14 @@ class Pterodactyl
      * @param bool $locked whether to lock the backup or not
      * @return string the UUID of the created backup
      */
-    public function createBackup(string $backup_name, bool $locked): string {
-
-        return "";
+    public function createBackup(): string {
+        echo "Creating Backup\n";
+        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/backups";
+        $response = $this->__post($url, []);
+        $response_data = json_decode($response);
+        $backup_uuid = $response_data['attributes']['uuid'];
+        echo "Created Backup with UUID " . $backup_uuid;
+        return $backup_uuid;
     }
     /**
      * Checks to see if backup with given UUID on given server UUID is finished
@@ -98,5 +91,53 @@ class Pterodactyl
     public function uploadFile(string $file_name) {
 
         $this->deleteFile([$file_name]);
+    }
+
+    /**
+     * Internal Helper function, sends GET request with auth headers
+     * @param string $url the URL to send it to
+     * @return String response The Response
+     */
+    private function __get(string $url) {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_POST, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $this->config->pterodactyl_api_key
+        ]);
+        echo "Sending Curl\n";
+        $response = curl_exec($curl);
+        echo "Curl Sent!\n";
+        if (curl_errno($curl)) {
+            die("Error Encountered while curling: " . curl_error($curl));
+        }
+        echo "Received Response: " . $response;
+        return $response;
+    }
+
+    /**
+     * Internal Helper function, sends POST request with auth headers
+     * @param string $url the URL to send it to
+     * @param array $data The POST data to send
+     * @return String response The Response
+     */
+    private function __post(string $url, array $data) {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $this->config->pterodactyl_api_key
+        ]);
+        echo "Sending Curl\n";
+        $response = curl_exec($curl);
+        echo "Curl Sent!\n";
+        if (curl_errno($curl)) {
+            die("Error Encountered while curling: " . curl_error($curl));
+        }
+        echo "Received Response: " . $response;
+        return $response;
     }
 }
