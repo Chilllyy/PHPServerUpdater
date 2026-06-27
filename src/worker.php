@@ -15,7 +15,7 @@ if (!array_key_exists('id', $yaml)) {
 echo "Loaded Queue!\n";
 $upload_id = $yaml['id'];
 echo "Found Upload ID: " , $upload_id;
-echo "\nCreating Pterodactyl Worker";
+echo "\nCreating Pterodactyl Worker\n";
 $pterodactyl = new Pterodactyl();
 echo "Created Worker\n";
 $pterodactyl->stopServer();
