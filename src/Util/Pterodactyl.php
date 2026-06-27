@@ -44,7 +44,8 @@ class Pterodactyl
     public function getServerRunning(): bool {
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/resources";
         $response = $this->__get($url);
-        $response_data = json_decode($response);
+        echo $response;
+        $response_data = json_decode($response, true);
         print_r("JSON DATA: " . $response_data);
         $running = $response_data['attributes']['current_state'] != 'offline';
         return $running;
@@ -60,7 +61,7 @@ class Pterodactyl
         echo "Creating Backup\n";
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/backups";
         $response = $this->__post($url, []);
-        $response_data = json_decode($response);
+        $response_data = json_decode($response, true);
         $backup_uuid = $response_data['attributes']['uuid'];
         echo "Created Backup with UUID " . $backup_uuid;
         return $backup_uuid;
@@ -113,7 +114,7 @@ class Pterodactyl
         if (curl_errno($curl)) {
             die("Error Encountered while curling: " . curl_error($curl));
         }
-        echo "Received Response: " . $response;
+        echo "Received Response: $response";
         return $response;
     }
 
@@ -138,7 +139,7 @@ class Pterodactyl
         if (curl_errno($curl)) {
             die("Error Encountered while curling: " . curl_error($curl));
         }
-        echo "Received Response: " . $response;
+        echo "Received Response: $response";
         return $response;
     }
 }
