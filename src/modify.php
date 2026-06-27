@@ -18,7 +18,6 @@ if (isset($_GET['upload'])) {
     $yamlString = Yaml::dump(['id' => $id], 2);
     file_put_contents('/tmp/queue.yml', $yamlString);
     $path = realpath(__DIR__ . '/worker.php');
-    shell_exec('php ' . $path . ' > /dev/null 2>&1 &');
 }
 
 if (isset($_GET['mark'])) {
