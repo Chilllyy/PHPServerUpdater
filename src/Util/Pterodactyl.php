@@ -122,7 +122,7 @@ class Pterodactyl
     private function getUploadURL() {
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/files/upload?directory=/";
         $response = $this->get($url);
-        $response_json = json_decode($response);
+        $response_json = json_decode($response, true);
         $jwt_url = $response_json['attributes']['url'];
         return $jwt_url;
     }
