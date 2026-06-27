@@ -45,7 +45,7 @@ class Pterodactyl
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/resources";
         $response = $this->__get($url);
         $response_data = json_decode($response);
-        print_r("JSON DATA: " + $response_data);
+        print_r("JSON DATA: " . $response_data);
         $running = $response_data['attributes']['current_state'] == 'running';
         return $running;
     }
