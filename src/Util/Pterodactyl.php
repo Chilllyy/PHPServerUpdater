@@ -44,9 +44,7 @@ class Pterodactyl
     public function getServerRunning(): bool {
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/resources";
         $response = $this->__get($url);
-        echo $response;
         $response_data = json_decode($response, true);
-        print_r("JSON DATA: " . $response_data);
         $running = $response_data['attributes']['current_state'] != 'offline';
         return $running;
     }
@@ -63,7 +61,6 @@ class Pterodactyl
         $response = $this->__post($url, []);
         $response_data = json_decode($response, true);
         $backup_uuid = $response_data['attributes']['uuid'];
-        echo "Created Backup with UUID " . $backup_uuid;
         return $backup_uuid;
     }
     /**
@@ -72,8 +69,10 @@ class Pterodactyl
      * @return bool whether or not the backup is complete
      */
     public function checkBackup(string $backup_uuid): bool {
-
-        return true;
+        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/backups/$backup_uuid";
+        $response = $this->__get($url);
+        $response_data = json_decode($response, true);
+        return $response_data['attributes']['is_successful'];
     }
 
     /**
