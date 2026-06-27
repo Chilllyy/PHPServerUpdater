@@ -46,7 +46,7 @@ class Pterodactyl
         $response = $this->__get($url);
         $response_data = json_decode($response);
         print_r("JSON DATA: " . $response_data);
-        $running = $response_data['attributes']['current_state'] == 'running';
+        $running = $response_data['attributes']['current_state'] != 'offline';
         return $running;
     }
 
