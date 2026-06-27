@@ -94,9 +94,34 @@ class Pterodactyl
      * @param string $file_name file in uploads folder
      * @return void
      */
-    public function uploadFile(string $file_name) {
+    public function uploadFile(string $file_name, string $name) {
+        $url = $this->getUploadURL();
+        $path = realpath($file_name);
+        $curlFile = curl_file_create($path, 'application/zip', $name);
+        $data = [
+            'files'=>$curlFile
+        ];
 
-        $this->deleteFile([$file_name]);
+        $this->post($url, $data);//Upload File
+
+        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/files/decompress";
+        $data = [
+            'root' => '/',
+            'file' => $name
+        ];
+
+        $this->post($url, $data); //Decompress File
+        
+        $this->deleteFile([$name]);//Delete File
+    }
+
+    /**
+     * Helper function to get Upload URL with JWT Token
+     * @return string URL to upload to
+     */
+    private function getUploadURL() {
+        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/files/upload?directory=/";
+        return $this->get($url);
     }
 
     /**

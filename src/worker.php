@@ -9,6 +9,7 @@ require __DIR__ . '/Util/Init.php';
 set_time_limit(0);
 
 $file = '/tmp/queue.yml';
+$delete_queue = false;
 echo "Loading Queue File\n";
 $yaml = Yaml::parseFile($file);
 if (!array_key_exists('id', $yaml)) {
@@ -17,6 +18,13 @@ if (!array_key_exists('id', $yaml)) {
 echo "Loaded Queue!\n";
 $upload_id = $yaml['id'];
 echo "Found Upload ID: $upload_id";
+$upload_file = __DIR__ . "/../uploads/$upload_id.zip";
+if (!file_exists($upload_file)) {
+    if ($delete_queue) {
+        unlink($file);
+    }
+    die("File to upload doesn't exist, cancelling");
+}
 echo "\nCreating Pterodactyl Worker\n";
 $pterodactyl = new Pterodactyl();
 echo "Created Worker\n";
@@ -48,3 +56,11 @@ if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
 }
 
 $pterodactyl->deleteFile($files);
+
+$pterodactyl->uploadFile($upload_file, "template.zip");
+
+
+
+if ($delete_queue) {
+    unlink($file);
+}
