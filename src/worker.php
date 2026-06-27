@@ -35,7 +35,7 @@ echo "Creating Backup with UUID $backup_uuid\n";
 sleep(15); //Artificial Pause to help with rate limiting
 $backup_finished = false;
 while (!$backup_finished) {
-    $backup_finished = !$pterodactyl->checkBackup($backup_uuid);
+    $backup_finished = $pterodactyl->checkBackup($backup_uuid);
     echo "Server Still backing up, waiting 5 seconds\n";
     sleep(5);
 }

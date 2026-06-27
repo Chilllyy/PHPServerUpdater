@@ -20,7 +20,7 @@ class Pterodactyl
             'signal' => $signal
         ];
         echo "Sending POST request\n";
-        $this->__post($url, $data);
+        $this->post($url, $data);
     }
 
     /**
@@ -43,7 +43,7 @@ class Pterodactyl
      */
     public function getServerRunning(): bool {
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/resources";
-        $response = $this->__get($url);
+        $response = $this->get($url);
         $response_data = json_decode($response, true);
         $running = $response_data['attributes']['current_state'] != 'offline';
         return $running;
@@ -58,7 +58,7 @@ class Pterodactyl
     public function createBackup(): string {
         echo "Creating Backup\n";
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/backups";
-        $response = $this->__post($url, []);
+        $response = $this->post($url, []);
         $response_data = json_decode($response, true);
         $backup_uuid = $response_data['attributes']['uuid'];
         return $backup_uuid;
@@ -70,7 +70,7 @@ class Pterodactyl
      */
     public function checkBackup(string $backup_uuid): bool {
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/backups/$backup_uuid";
-        $response = $this->__get($url);
+        $response = $this->get($url);
         $response_data = json_decode($response, true);
         return $response_data['attributes']['is_successful'];
     }
@@ -86,7 +86,7 @@ class Pterodactyl
             'root' => '/',
             'files'=> $files
         ];
-        $this->__post($url, $data);
+        $this->post($url, $data);
     }
 
     /**
@@ -104,7 +104,7 @@ class Pterodactyl
      * @param string $url the URL to send it to
      * @return String response The Response
      */
-    private function __get(string $url) {
+    private function get(string $url) {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_POST, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -128,7 +128,7 @@ class Pterodactyl
      * @param array $data The POST data to send
      * @return String response The Response
      */
-    private function __post(string $url, array $data) {
+    private function post(string $url, array $data) {
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
