@@ -62,8 +62,6 @@ $pterodactyl->uploadFile($upload_file, "template.zip");
 
 $pterodactyl->startServer();
 
-
-
 if ($delete_queue) {
     unlink($file);
 }
