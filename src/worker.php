@@ -22,12 +22,29 @@ $pterodactyl = new Pterodactyl();
 echo "Created Worker\n";
 $pterodactyl->stopServer();
 echo "Stopping Server\n";
+sleep(15); //Artificial pause to help with rate limiting
 $stopped = false;
 while (!$stopped) {
     $stopped = !$pterodactyl->getServerRunning();
     echo "Server Still running, waiting 5 seconds";
     sleep(5);
 }
-echo "Server Stopped! creating backup now";
+echo "Server Stopped! creating backup now\n";
 $backup_uuid = $pterodactyl->createBackup();
-echo "Created Backup with UUID $backup_uuid";
+echo "Creating Backup with UUID $backup_uuid\n";
+sleep(15); //Artificial Pause to help with rate limiting
+$backup_finished = false;
+while (!$backup_finished) {
+    $backup_finished = !$pterodactyl->checkBackup($backup_uuid);
+    echo "Server Still backing up, waiting 5 seconds\n";
+    sleep(5);
+}
+$files = [
+    'world'
+];
+//Delete Plugins folder if there is a backup under uploads, else just leave it as is
+if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
+    $files[] = 'plugins';
+}
+
+$pterodactyl->deleteFile($files);
