@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ?>
             <form action="#" method="post">
                 <input type="text" name="username" placeholder="Username" required>
-                <input type="text" name="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Password" required>
                 <input type="submit" value="submit" name="submit">
                 <?php
                 if (isset($_GET['incorrect'])) {
