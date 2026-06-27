@@ -53,13 +53,16 @@ class Pterodactyl
      * Creates a server backup for the specified server UUID with the name and locks it
      * @param string $backup_name the name of the new backup
      * @param bool $locked whether to lock the backup or not
-     * @return string the UUID of the created backup
+     * @return string | array string containing the backup UUID, or an array of the errors
      */
-    public function createBackup(): string {
+    public function createBackup() {
         echo "Creating Backup\n";
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/backups";
         $response = $this->post($url, []);
         $response_data = json_decode($response, true);
+        if (isset($response_data['errors'])) {
+            return $response_data;
+        }
         $backup_uuid = $response_data['attributes']['uuid'];
         return $backup_uuid;
     }
