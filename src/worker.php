@@ -12,12 +12,12 @@ $file = '/tmp/queue.yml';
 $delete_queue = true;
 echo "Loading Queue File\n";
 if (!file_exists($file)) {
-    echo "No Queue to run";
+    echo "No Queue to run\n";
     return;
 }
 $yaml = Yaml::parseFile($file);
 if (!array_key_exists('id', $yaml)) {
-    echo "No Queue to run";
+    echo "No Queue to run\n";
     return;
 }
 echo "Loaded Queue!\n";
