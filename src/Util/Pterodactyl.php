@@ -15,7 +15,7 @@ class Pterodactyl
      */
     private function setServerPowerState(string $signal) {
         echo "Setting Power State\n";
-        $url = $this->config->pterodactyl_url;
+        $url = $this->config->pterodactyl_url . "/api/client/servers/" . $this->config->server_uuid . "/power";
         $data = [
             'signal' => $signal
         ];
