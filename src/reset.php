@@ -38,16 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] != 'GET') {
     exit("Method Not Allowed");
 }
 
-if (!isset($_GET['id'])) {
-    http_response_code(400);
-    exit("Missing ID");
-}
-
-$id = $_GET['id'];
-if (!ServerTemplate::GetOne($id)) {
-    http_response_code(400);
-    exit("Invalid ID");
-}
+$template = ServerTemplate::GetRandom();
+$id = $template->id;
 
 $yamlString = Yaml::dump(['id' => $id], 2);
 file_put_contents('/tmp/queue.yml', $yamlString);

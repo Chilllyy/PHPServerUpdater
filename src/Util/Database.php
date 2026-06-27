@@ -56,6 +56,21 @@ class ServerTemplate
     }
 
     /**
+     * Gets Random Server Template
+     * @return ServerTemplate Template
+     */
+    public static function GetRandom() {
+        $query = "SELECT * FROM server_templates ORDER BY RANDOM() LIMIT 1";
+        $run = Database::getConnection()->prepare($query);
+        $run->execute([]);
+        $row = $run->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return new ServerTemplate($row['id'], $row['template_name'], $row['is_next'] == 1);
+        }
+        return null;
+    }
+
+    /**
      * Gets One Server Template
      * @param string $id ID to get
      * @return ServerTemplate returns template
