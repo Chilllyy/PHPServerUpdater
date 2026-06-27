@@ -1,3 +1,3 @@
 CHMOD -R a+wrx /var/www/
 
-apache -D foreground
+apache2-foreground
