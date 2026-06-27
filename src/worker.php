@@ -9,7 +9,7 @@ require __DIR__ . '/Util/Init.php';
 set_time_limit(0);
 
 $file = '/tmp/queue.yml';
-$delete_queue = false;
+$delete_queue = true;
 echo "Loading Queue File\n";
 $yaml = Yaml::parseFile($file);
 if (!array_key_exists('id', $yaml)) {
