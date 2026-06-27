@@ -97,12 +97,8 @@ class Pterodactyl
     public function uploadFile(string $file_name, string $name) {
         $url = $this->getUploadURL();
         $path = realpath($file_name);
-        $curlFile = curl_file_create($path, 'application/zip', $name);
-        $data = [
-            'files'=>$curlFile
-        ];
 
-        $this->post($url, $data);//Upload File
+        $this->postFile($url, $path, $name);//Upload File
 
         $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/files/decompress";
         $data = [
@@ -174,6 +170,40 @@ class Pterodactyl
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
+            'Authorization: Bearer ' . $this->config->pterodactyl_api_key,
+            'Accept: Application/vnd.pterodactyl.v1+json'
+        ]);
+        echo "Sending Curl\n";
+        $response = curl_exec($curl);
+        echo "Curl Sent!\n";
+        if (curl_errno($curl)) {
+            die("Error Encountered while curling: " . curl_error($curl));
+        }
+        $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $time = 60;
+        $attempts = 2;
+        while ($code == 429) {
+            echo "Received code 429, waiting $time seconds for rate limit";
+            $attempts++;
+            $time = $attempts * 30;
+            sleep($time);
+            return $response = $this->post($url, $data);
+        }
+        echo "Received Response: $response\n";
+        return $response;
+    }
+
+    private function postFile(string $url, string $files, string $filename) {
+        $curlFile = curl_file_create($files, 'application/zip', $filename);
+        $data = [
+            'files'=>$curlFile
+        ];
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            'Content-Type: multipart/form-data',
             'Authorization: Bearer ' . $this->config->pterodactyl_api_key,
             'Accept: Application/vnd.pterodactyl.v1+json'
         ]);
