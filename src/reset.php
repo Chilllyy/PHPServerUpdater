@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'GET') {
     exit("Method Not Allowed");
 }
 
-$template = ServerTemplate::GetRandom();
+$template = ServerTemplate::GetNext();
 $id = $template->id;
 
 $yamlString = Yaml::dump(['id' => $id], 2);
