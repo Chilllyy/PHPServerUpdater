@@ -28,6 +28,10 @@ if (!file_exists($upload_file)) {
 }
 echo "\nCreating Pterodactyl Worker\n";
 $pterodactyl = new Pterodactyl();
+
+echo "UPLOADING FILE\n";
+$pterodactyl->uploadFile($upload_file, "template.zip");
+die("File Uploaded!");
 echo "Created Worker\n";
 $pterodactyl->stopServer();
 echo "Stopping Server\n";
