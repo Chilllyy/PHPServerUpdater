@@ -23,20 +23,20 @@ echo "Created Worker\n";
 $pterodactyl->stopServer();
 echo "Stopping Server\n";
 sleep(10); //Artificial pause to help with rate limiting
-$stopped = false;
+$stopped = !$pterodactyl->getServerRunning();
 while (!$stopped) {
-    $stopped = !$pterodactyl->getServerRunning();
     echo "Server Still running, waiting 5 seconds\n";
+    $stopped = !$pterodactyl->getServerRunning();
     sleep(5);
 }
 echo "Server Stopped! creating backup now\n";
 $backup_uuid = $pterodactyl->createBackup();
 echo "Creating Backup with UUID $backup_uuid\n";
 sleep(10); //Artificial Pause to help with rate limiting
-$backup_finished = false;
+$backup_finished = $pterodactyl->checkBackup($backup_uuid);
 while (!$backup_finished) {
-    $backup_finished = $pterodactyl->checkBackup($backup_uuid);
     echo "Server Still backing up, waiting 5 seconds\n";
+    $backup_finished = $pterodactyl->checkBackup($backup_uuid);
     sleep(5);
 }
 $files = [
