@@ -26,6 +26,10 @@ if (!$template) {
 }
 
 $target_file = __DIR__ . '/../uploads/' . $template->id . ".zip";
+if (!is_dir(__DIR__ . '/../uploads')) {
+    mkdir(__DIR__ . '/../uploads', 0755, true);
+}
+
 if (file_exists($target_file)) {
     die("File Already exists: " . $target_file);
 }
