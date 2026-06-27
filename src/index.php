@@ -100,6 +100,7 @@ require_once __DIR__ . '/auth.php';
             foreach($templates as $template) {
             ?>
             <div class="grid-item <?php echo $template->is_next ? "next" : ""; ?>">
+                <sub><?php echo $template->id; ?></sub>
                 <p><?php echo $template->template_name ?></p>
                 <form action="modify.php" method="get">
                     <input type="hidden" name="id" value="<?php echo $template->id; ?>">
