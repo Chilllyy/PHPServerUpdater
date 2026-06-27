@@ -26,7 +26,7 @@ sleep(15); //Artificial pause to help with rate limiting
 $stopped = false;
 while (!$stopped) {
     $stopped = !$pterodactyl->getServerRunning();
-    echo "Server Still running, waiting 5 seconds";
+    echo "Server Still running, waiting 5 seconds\n";
     sleep(5);
 }
 echo "Server Stopped! creating backup now\n";

@@ -81,7 +81,7 @@ class Pterodactyl
      * @return void
      */
     public function deleteFile(array $files) {
-        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/delete";
+        $url = $this->config->pterodactyl_url . "/api/client/servers/{$this->config->server_uuid}/files/delete";
         $data = [
             'root' => '/',
             'files'=> $files
