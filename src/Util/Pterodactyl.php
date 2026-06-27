@@ -35,6 +35,7 @@ class Pterodactyl
         if (curl_errno($ch)) {
             die("Error encountered: " . curl_error($ch));
         }
+        echo "Curl Response: " . $response;
     }
 
     /**
