@@ -24,6 +24,7 @@ if (isset($_GET['mark'])) {
 }
 
 if (isset($_GET['unmark'])) {
+    $template->unmarkNext();
 }
 
 if (isset($_GET['delete'])) {
