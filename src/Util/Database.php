@@ -101,6 +101,11 @@ class ServerTemplate
         return null;
     }
 
+    public static function ClearNext() {
+        $query = "UPDATE server_templates SET is_next = 0";
+        Database::getConnection()->exec($query);
+    }
+
     /**
      * Creates Server Template and returns it
      * @param string $template_name

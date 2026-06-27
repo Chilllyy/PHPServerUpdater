@@ -38,6 +38,7 @@ if (!file_exists($upload_file)) {
     die("File to upload doesn't exist, cancelling\n");
 }
 echo "Preparing to Upload Template with name {$template->template_name}\n";
+ServerTemplate::ClearNext();
 echo "Creating Pterodactyl Worker\n";
 $pterodactyl = new Pterodactyl();
 echo "Created Worker\n";
