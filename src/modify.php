@@ -1,0 +1,30 @@
+<?php
+
+use Chilly\Util\ServerTemplate;
+
+require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/Util/Init.php';
+
+if (!isset($_GET['id'])) {
+    die("No ID provided");
+}
+
+$id = $_GET['id'];
+$template = ServerTemplate::GetOne($id);
+
+if (isset($_GET['upload'])) {
+    echo "TODO Upload to server";
+}
+
+if (isset($_GET['mark'])) {
+    $template->markNext();
+}
+
+if (isset($_GET['unmark'])) {
+}
+
+if (isset($_GET['delete'])) {
+    $template->delete();
+}
+
+header('location: /');
