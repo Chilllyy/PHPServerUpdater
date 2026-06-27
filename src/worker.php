@@ -17,9 +17,9 @@ if (!array_key_exists('id', $yaml)) {
 }
 echo "Loaded Queue!\n";
 $upload_id = $yaml['id'];
-echo "Found Upload ID: $upload_id";
-$upload_file = realpath(__DIR__ . "/../uploads/$upload_id.zip");
-echo "Searching for file $upload_file";
+echo "Found Upload ID: $upload_id\n";
+$upload_file = __DIR__ . "/../uploads/$upload_id.zip";
+echo "Searching for file $upload_file\n";
 if (!file_exists($upload_file)) {
     if ($delete_queue) {
         unlink($file);
