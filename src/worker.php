@@ -4,7 +4,7 @@ use Chilly\Util\Pterodactyl;
 use Symfony\Component\Yaml\Yaml;
 
 include __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/Util/Init.php';
+#require_once __DIR__ . '/Util/Init.php';
 
 set_time_limit(0);
 
@@ -12,11 +12,13 @@ $file = '/tmp/queue.yml';
 $delete_queue = true;
 echo "Loading Queue File\n";
 if (!file_exists($file)) {
-    die("No Queue to run");
+    echo "No Queue to run";
+    return;
 }
 $yaml = Yaml::parseFile($file);
 if (!array_key_exists('id', $yaml)) {
-    die("No Queue to run");
+    echo "No Queue to run";
+    return;
 }
 echo "Loaded Queue!\n";
 $upload_id = $yaml['id'];
