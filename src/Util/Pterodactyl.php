@@ -144,7 +144,7 @@ class Pterodactyl
             die("Error Encountered while curling: " . curl_error($curl));
         }
         $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-       $time = 60;
+        $time = 60;
         $attempts = 2;
         while ($code == 429) {
             echo "Received code 429, waiting $time seconds for rate limit";
