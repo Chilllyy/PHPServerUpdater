@@ -7,8 +7,13 @@ use Symfony\Component\Yaml\Yaml;
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/Util/Init.php';
 function getBearer() {
-    $headers = $_SERVER['Authorization'] ?? $_SERVER['HTTP_AUTHORIZATION'] ?? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? null;
-
+    $headers = null;
+    if (isset($_SERVER['Authorization'])) {
+        $headers = trim($_SERVER['Authorization']);
+    } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        $headers = trim($_SERVER['HTTP_AUTHORIZATION']);
+    }
+    
     if (!empty($headers) && preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
         return $matches[1];
     }
