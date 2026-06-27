@@ -1,6 +1,7 @@
 <?php
 
 use Chilly\Util\ServerTemplate;
+use Symfony\Component\Yaml\Yaml;
 
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/Util/Init.php';
@@ -14,6 +15,8 @@ $template = ServerTemplate::GetOne($id);
 
 if (isset($_GET['upload'])) {
     echo "TODO Upload to server";
+    $yamlString = Yaml::dump(['id' => $id], 2);
+    file_put_contents('/tmp/queue.yml', $yamlString);
 }
 
 if (isset($_GET['mark'])) {
