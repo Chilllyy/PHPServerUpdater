@@ -55,8 +55,8 @@ while (!$stopped) {
 echo "Server Stopped! creating backup now\n";
 $backup_uuid = $pterodactyl->createBackup();
 if (isset($backup_uuid['errors'])) {
-    $details = $backup_uuid['errors']['detail'];
-    $code = $backup_uuid['errors']['code'];
+    $details = $backup_uuid['errors'][0]['detail'];
+    $code = $backup_uuid['errors'][0]['code'];
     print("Encountered error while creating backup $details\n with code $code\n");
     if ($delete_queue) {
         unlink($file);
