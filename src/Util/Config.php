@@ -10,6 +10,9 @@ class Config
     public string $pterodactyl_api_key;
     public string $db_file;
     public string $server_uuid;
+    public string $username;
+    public string $password;
+    public string $key;
 
     public function __construct(string $file) {
         try {
@@ -21,6 +24,9 @@ class Config
             $this->pterodactyl_api_key = $yaml['panel_api_key'];
             $this->db_file = $yaml['db_file'];
             $this->server_uuid = $yaml['server_uuid'];
+            $this->username = $yaml['username'];
+            $this->password = password_hash($yaml['password'], PASSWORD_DEFAULT);
+            $this->key = $yaml['key'];
         } catch (ParseException $e) {
             die("Error parsing YAML file: " . $e->getMessage());
         } catch (\Exception $e) {

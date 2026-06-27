@@ -1,8 +1,8 @@
 <?php
 
 use Chilly\Util\ServerTemplate;
-require_once __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/Util/Init.php';
+include __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/Util/Init.php';
 ?>
 
 <!DOCTYPE html>
