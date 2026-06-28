@@ -12,14 +12,6 @@ $file = $_FILES['template_file'];
 $name = $_POST['template_name'];
 
 
-print("File: " . $file['name']);
-?>
-<br>
-<?php
-print("Template Name: " . $name);
-?>
-<br>
-<?php
 $template = ServerTemplate::Create($name);
 if (!$template) {
     die("Unable to create server template, please check DB");
@@ -35,7 +27,6 @@ if (file_exists($target_file)) {
 }
 
 if (move_uploaded_file($file['tmp_name'], $target_file)) {
-    echo "File Uploaded!";
     header("location: /");
     return;
 }
