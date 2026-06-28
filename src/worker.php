@@ -45,7 +45,7 @@ echo "Created Worker\n";
 //BEGIN SERVER ACTIONS
 $pterodactyl->stopServer();
 echo "Stopping Server\n";
-sleep(10); //Artificial pause to help with rate limiting
+sleep(2);
 $stopped = !$pterodactyl->getServerRunning();
 while (!$stopped) {
     echo "Server Still running, waiting 5 seconds\n";
@@ -55,7 +55,7 @@ while (!$stopped) {
 echo "Server Stopped! creating backup now\n";
 $backup_uuid = $pterodactyl->createBackup();
 echo "Creating Backup with UUID $backup_uuid\n";
-sleep(10); //Artificial Pause to help with rate limiting
+sleep(2);
 $backup_finished = $pterodactyl->checkBackup($backup_uuid);
 while (!$backup_finished) {
     echo "Server Still backing up, waiting 5 seconds\n";
@@ -69,13 +69,15 @@ $files = [
 if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
     $files[] = 'plugins';
 }
-
+sleep(2);
 $pterodactyl->deleteFile($files);
-
+sleep(2);
 $pterodactyl->uploadFile($upload_file, "template.zip");
+sleep(2);
 if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
     $plugins_file = __DIR__ . '/../uploads/plugins.zip';
     $pterodactyl->uploadFile($plugins_file, "plugins.zip");
+    sleep(2);
 }
 
 $pterodactyl->startServer();
