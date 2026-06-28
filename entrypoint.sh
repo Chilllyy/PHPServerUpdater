@@ -10,7 +10,7 @@ php service.php &
 QUEUE_PID=$!
 
 echo "Starting web server on ${PORT}..."
-php -S 0.0.0.0:${PORT} -t public &
+php -S 0.0.0.0:${PORT} -t /home/container/src &
 WEB_PID=$!
 
 # If either dies, kill the other
