@@ -2,7 +2,11 @@
 
 echo "Starting Apache Webserver..."
 
-apache2-forground &
+PORT="${APACHE_PORT:-80}"
+
+sed -i "s/^Listen 80/c\Listen $PORT" /usr/local/apache2/conf/httpd.conf
+
+apache2-foreground &
 
 echo "Waiting For Apache..."
 sleep 2
