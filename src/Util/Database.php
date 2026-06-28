@@ -25,7 +25,6 @@ class Database
         Database::$connection = $connection;
     }
 
-    //TODO: DB connection and query methods
     public static function getConnection(): PDO
     {
         return Database::$connection;
@@ -148,13 +147,8 @@ class ServerTemplate
         $run->execute([':id' => $this->id]);
         $file = __DIR__ . '/../../uploads/' . $this->id . '.zip';
         if (file_exists($file)) {
-            if (unlink($file)) {
-                echo "File Deleted!";
-            } else {
-                echo "Unable to delete file";
-            }
+            unlink($file);
         } else {
-            echo "Error: The file does not exist.";
         }
     }
 }

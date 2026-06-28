@@ -16,7 +16,6 @@ $template = ServerTemplate::GetOne($id);
 if (isset($_GET['upload'])) {
     $yamlString = Yaml::dump(['id' => $id], 2);
     file_put_contents('/tmp/queue.yml', $yamlString);
-    $path = realpath(__DIR__ . '/worker.php');
 }
 
 if (isset($_GET['mark'])) {
