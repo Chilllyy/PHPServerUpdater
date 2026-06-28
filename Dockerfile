@@ -1,18 +1,36 @@
-FROM php:8.5-apache
+FROM php:8.5-cli
 
-RUN adduser --disabled-password --home /home/container container
-ENV USER=container HOME=/home/container
+RUN apt-get update && apt-get install -y \
+        libzip-dev \
+        unzip \
+        git \
+        supervisor \
+    && docker-php-ext-install \
+        pdo \
+        pdo_sqlite \
+        zip \
+        opcache \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -d /home/container container
+
+ENV USER=container
+ENV HOME=/home/container
+
 WORKDIR /home/container
-RUN mkdir /home/container/src
 
-ENV APACHE_DOCUMENT_ROOT /home/container/src
+RUN mkdir -p \
+    /home/container/src \
+    /home/container/uploads 
 
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-COPY ./uploads.ini $PHP_INI_DIR/conf.d/uploads.ini
+COPY uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+COPY entrypoint.sh /entrypoint.sh
 
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN chmod +x /entrypoint.sh
 
-COPY ./entrypoint.sh /entrypoint.sh
+ADD ./supervisord.conf /etc/supervisor/supervisord.conf
 
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+USER container
+
+ENTRYPOINT ["/entrypoint.sh"]
