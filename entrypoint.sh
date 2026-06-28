@@ -4,6 +4,9 @@ set -e
 PORT="${SERVER_PORT:-8080}"
 
 cd /home/container/src
+touch /home/container/database.sqlite
+chmod 664 /home/container/database.sqlite
+chmod 775 /home/container
 
 echo "Starting queue worker..."
 php service.php &
