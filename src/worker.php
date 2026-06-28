@@ -73,6 +73,10 @@ if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
 $pterodactyl->deleteFile($files);
 
 $pterodactyl->uploadFile($upload_file, "template.zip");
+if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
+    $plugins_file = __DIR__ . '/../uploads/plugins.zip';
+    $pterodactyl->uploadFile($plugins_file, "plugins.zip");
+}
 
 $pterodactyl->startServer();
 
