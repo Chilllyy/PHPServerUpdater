@@ -1,0 +1,102 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2026-06-27T19:59:45-06:00",
+    "name": "Server Switcher",
+    "author": "unknown@unknown.com",
+    "description": "Switches Servers",
+    "features": [],
+    "docker_images": {
+        "chilly\/server_switcher:latest": "chilly\/server_switcher:latest"
+    },
+    "file_denylist": [],
+    "startup": "Not Used",
+    "config": {
+        "files": "{\r\n    \"config.yml\": {\r\n        \"parser\": \"yaml\",\r\n        \"find\": {\r\n            \"panel_url\": \"{{server.build.env.PANEL_URL}}\",\r\n            \"panel_api_key\": \"{{server.build.env.PANEL_API}}\",\r\n            \"db_file\": \"{{server.build.env.DB_FILE}}\",\r\n            \"server_uuid\": \"{{server.build.env.S_UUID}}\",\r\n            \"username\": \"{{server.build.env.USERNAME}}\",\r\n            \"password\": \"{{server.build.env.PASSWORD}}\",\r\n            \"key\": \"{{server.build.env.KEY}}\"\r\n        }\r\n    }\r\n}",
+        "startup": "{\r\n    \"done\": \"Checking Queue Worker\"\r\n}",
+        "logs": "{}",
+        "stop": "^C^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "apk add --no-cache git\r\ngit clone --depth 1 --branch pterodactyl https:\/\/github.com\/Chilllyy\/PHPServerUpdater \/mnt\/server\r\ncd \/mnt\/server\r\ncomposer install --no-dev --optimize-autoloader\r\nchmod 775 \/mnt\/server",
+            "container": "composer\/composer:2.10.1",
+            "entrypoint": "ash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Panel URL",
+            "description": "",
+            "env_variable": "PANEL_URL",
+            "default_value": "https:\/\/localhost",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:40",
+            "field_type": "text"
+        },
+        {
+            "name": "Panel API Key",
+            "description": "Pterodactyl Panel Client API Key",
+            "env_variable": "PANEL_API",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:48",
+            "field_type": "text"
+        },
+        {
+            "name": "Server UUID",
+            "description": "",
+            "env_variable": "S_UUID",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:48",
+            "field_type": "text"
+        },
+        {
+            "name": "Username",
+            "description": "",
+            "env_variable": "USERNAME",
+            "default_value": "chilly",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Password",
+            "description": "",
+            "env_variable": "PASSWORD",
+            "default_value": "ChillyPassword",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Reset Key",
+            "description": "",
+            "env_variable": "KEY",
+            "default_value": "IAmAKeyAndProbablyGay",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:32",
+            "field_type": "text"
+        },
+        {
+            "name": "Database File",
+            "description": "",
+            "env_variable": "DB_FILE",
+            "default_value": "database.db",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}
