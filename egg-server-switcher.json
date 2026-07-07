@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2026-06-27T19:59:45-06:00",
+    "exported_at": "2026-07-07T19:00:43-03:00",
     "name": "Server Switcher",
     "author": "unknown@unknown.com",
     "description": "Switches Servers",
@@ -15,7 +15,7 @@
     "file_denylist": [],
     "startup": "Not Used",
     "config": {
-        "files": "{\r\n    \"config.yml\": {\r\n        \"parser\": \"yaml\",\r\n        \"find\": {\r\n            \"panel_url\": \"{{server.build.env.PANEL_URL}}\",\r\n            \"panel_api_key\": \"{{server.build.env.PANEL_API}}\",\r\n            \"db_file\": \"{{server.build.env.DB_FILE}}\",\r\n            \"server_uuid\": \"{{server.build.env.S_UUID}}\",\r\n            \"username\": \"{{server.build.env.USERNAME}}\",\r\n            \"password\": \"{{server.build.env.PASSWORD}}\",\r\n            \"key\": \"{{server.build.env.KEY}}\"\r\n        }\r\n    }\r\n}",
+        "files": "{\r\n    \"config.yml\": {\r\n        \"parser\": \"yaml\",\r\n        \"find\": {\r\n            \"panel_url\": \"{{server.build.env.PANEL_URL}}\",\r\n            \"panel_api_key\": \"{{server.build.env.PANEL_API}}\",\r\n            \"db_file\": \"{{server.build.env.DB_FILE}}\",\r\n            \"server_uuid\": \"{{server.build.env.S_UUID}}\",\r\n            \"username\": \"{{server.build.env.USERNAME}}\",\r\n            \"password\": \"{{server.build.env.PASSWORD}}\",\r\n            \"key\": \"{{server.build.env.KEY}}\",\r\n            \"webhook_title\": \"{{server.build.env.WEBHOOK_TITLE}}\",\r\n            \"webhook_url\": \"{{server.build.env.WEBHOOK_URL}}\",\r\n            \"webhook_message\": \"{{server.build.env.WEBHOOK_MESSAGE}}\",\r\n            \"webhook_color\": \"{{server.build.env.WEBHOOK_COLOR}}\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"Checking Queue Worker\"\r\n}",
         "logs": "{}",
         "stop": "^C^C"
@@ -96,6 +96,46 @@
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Webhook Title",
+            "description": "",
+            "env_variable": "WEBHOOK_TITLE",
+            "default_value": "Server Switcher",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Webhook URL",
+            "description": "",
+            "env_variable": "WEBHOOK_URL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:2048",
+            "field_type": "text"
+        },
+        {
+            "name": "Webhook Message",
+            "description": "",
+            "env_variable": "WEBHOOK_MESSAGE",
+            "default_value": "Server has been switched to {NEW_SERVER}",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:1024",
+            "field_type": "text"
+        },
+        {
+            "name": "Webhook Color",
+            "description": "",
+            "env_variable": "WEBHOOK_COLOR",
+            "default_value": "5763719",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|int|max:20",
             "field_type": "text"
         }
     ]
