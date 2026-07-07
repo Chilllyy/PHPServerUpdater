@@ -126,6 +126,29 @@ class Pterodactyl
         return $jwt_url;
     }
 
+    public function sendWebhook($server_name) {
+        $url = $this->config->webhook_url;
+        $message = $this->config->webhook_message;
+        $title = $this->config->webhook_title;
+        $color = $this->config->webhook_color;
+        $variable_message = str_replace("{NEW_SERVER}", $server_name, $message);
+        $variable_title = str_replace("{NEW_SERVER}", $server_name, $title);
+
+        $data = [
+            "embeds" => [
+                [
+                    "title" => $variable_title,
+                    "type" => "rich",
+                    "description" => $variable_message,
+                    "color" => $color
+                ]
+            ]
+        ];
+
+        return $this->post($url . "?wait=true", $data);
+    }
+
+
     /**
      * Internal Helper function, sends GET request with auth headers
      * @param string $url the URL to send it to

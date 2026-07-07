@@ -13,6 +13,10 @@ class Config
     public string $username;
     public string $password;
     public string $key;
+    public string $webhook_url;
+    public string $webhook_title;
+    public string $webhook_message;
+    public int $webhook_color;
 
     public function __construct(string $file) {
         try {
@@ -27,6 +31,10 @@ class Config
             $this->username = $yaml['username'];
             $this->password = password_hash($yaml['password'], PASSWORD_DEFAULT);
             $this->key = $yaml['key'];
+            $this->webhook_url = $yaml['webhook_url'];
+            $this->webhook_title = $yaml['webhook_title'];
+            $this->webhook_message = $yaml['webhook_message'];
+            $this->webhook_color = $yaml['webhook_color'];
         } catch (ParseException $e) {
             die("Error parsing YAML file: " . $e->getMessage());
         } catch (\Exception $e) {

@@ -62,16 +62,20 @@ while (!$backup_finished) {
     $backup_finished = $pterodactyl->checkBackup($backup_uuid);
     sleep(5);
 }
+echo "Server Backup Finished!\n";
 $files = [
     'world'
 ];
 //Delete Plugins folder if there is a backup under uploads, else just leave it as is
 if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
     $files[] = 'plugins';
+    echo "Plugins zip found, will re-upload plugins\n";
 }
 sleep(2);
+echo "Deleting Old World Files\n";
 $pterodactyl->deleteFile($files);
 sleep(2);
+echo "Uploading new files\n";
 $pterodactyl->uploadFile($upload_file, "template.zip");
 sleep(2);
 if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
@@ -79,8 +83,20 @@ if (file_exists(__DIR__ . '/../uploads/plugins.zip')) {
     $pterodactyl->uploadFile($plugins_file, "plugins.zip");
     sleep(2);
 }
+echo "Files Uploaded, restarting server\n";
 
 $pterodactyl->startServer();
+
+$stopped = !$pterodactyl->getServerRunning();
+while ($stopped) {
+    echo "Server Still stopped, waiting 5 seconds\n";
+    $stopped = !$pterodactyl->getServerRunning();
+    sleep(5);
+}
+
+//Server Back Up
+echo "Task Complete! Sending Webhook\n";
+$pterodactyl->sendWebhook($template->template_name);
 
 if ($delete_queue) {
     unlink($file);
